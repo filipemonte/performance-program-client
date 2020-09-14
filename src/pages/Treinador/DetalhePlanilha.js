@@ -4,10 +4,6 @@ import Navbar from '../../components/navbar';
 import FormPlanilha from '../../components/form-planilha';
 
 class DetalhePlanilha extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
         <div>

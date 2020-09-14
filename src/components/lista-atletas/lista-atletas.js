@@ -2,16 +2,10 @@ import React, { Component } from 'react';
 
 import { trackPromise } from 'react-promise-tracker';
 import Switch from "react-switch";
-import Menu from '../../components/menu';
-import Navbar from '../../components/navbar';
-import CalendarioAtleta from '../../components/calendario-atleta';
-import TreinoAtleta from '../../components/treino-atleta';
-import Footer from '../../components/footer';
 import { myConfig } from '../../config';
 import authHeader from '../../auth/auth-header';
 import authService from '../../auth/auth-service';
 import { userContext } from '../../userContext';
-import ReactToPrint from 'react-to-print';
 
 class ListaAtletas extends Component {
   constructor(props) {
@@ -21,6 +15,7 @@ class ListaAtletas extends Component {
 
     this.state = {
       atletas: [],
+      planilhas: [],
       fetched: false,
       checked: false
     };
@@ -29,12 +24,21 @@ class ListaAtletas extends Component {
   componentDidMount() {
     this.setState({ fetched: false })
     this.context.toggleMenu();
+
+    trackPromise(
+      fetch(`${myConfig.apiUrl}/planilhas/${authService.getCurrentUser().id}`, { headers: authHeader() })
+        .then(res => res.json())
+        .then((data) => {
+          this.setState({ planilhas: data })
+        })
+        .catch(console.log)
+    );
   }
 
   componentDidUpdate(prevState) {
     if (!this.state.fetched) {
       trackPromise(
-        fetch(`${myConfig.apiUrl}/atletas/1`, { headers: authHeader() })
+        fetch(`${myConfig.apiUrl}/atletas/${authService.getCurrentUser().id}`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
             this.setState({ atletas: data })
@@ -43,6 +47,25 @@ class ListaAtletas extends Component {
           .catch(console.log)
       );
     }
+  }
+
+  handlePlanilhaChange(idAtleta, event)
+  {
+    let idNovaPlanilha = event.target.value;
+
+    trackPromise(
+      fetch(`${myConfig.apiUrl}/planilhaAtleta/${idNovaPlanilha}/${idAtleta}`, { method: 'put', headers: authHeader() })
+        .then(function (response) {
+          if (response.ok) {
+
+          }
+        })
+        .catch(console.log)
+    );
+
+    let temp = [...this.state.atletas];
+    temp.find(x => x.id == idAtleta).idplanilha = idNovaPlanilha;
+    this.setState({ atletas: temp })
   }
 
   handleChange(id, checked) {
@@ -87,7 +110,13 @@ class ListaAtletas extends Component {
             {this.state.atletas.map(item => (
               <tr key={item.id}>
                 <td>{item.nome}</td>
-                <td>{item.planilha}</td>
+                <td>
+                  <select name="cars" id="cars" className="form-control" value={item.idplanilha} onChange={this.handlePlanilhaChange.bind(this, item.id)}>
+                    {this.state.planilhas.map(optionItem => (
+                      <option key={optionItem.id} value={optionItem.id}>{optionItem.nome}</option>
+                    ))}
+                  </select>
+                </td>
                 <td>
                   <Switch
                     checked={item.status == "ativo"}

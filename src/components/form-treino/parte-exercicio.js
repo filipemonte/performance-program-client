@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-import { trackPromise } from 'react-promise-tracker';
-import { Link, Redirect } from 'react-router-dom'
-
 
 class ParteExercicio extends Component {
   constructor(props) {

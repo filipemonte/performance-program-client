@@ -1,6 +1,4 @@
-import React, { Component, useRef } from 'react';
-import { trackPromise } from 'react-promise-tracker';
-import { Link, Redirect } from 'react-router-dom'
+import React, { Component } from 'react';
 import ParteExercicio from './parte-exercicio';
 
 

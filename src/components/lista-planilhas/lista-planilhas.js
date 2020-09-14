@@ -3,6 +3,7 @@ import { trackPromise } from 'react-promise-tracker';
 import { Link } from 'react-router-dom'
 import { myConfig } from '../../config';
 import authHeader from '../../auth/auth-header';
+import authService from '../../auth/auth-service';
 
 class ListaPlanilhas extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class ListaPlanilhas extends Component {
   componentDidUpdate(prevState) {
     if (!this.state.fetched) {
       trackPromise(
-        fetch(`${myConfig.apiUrl}/planilhasatleta/1`, { headers: authHeader() })
+        fetch(`${myConfig.apiUrl}/planilhasatleta/${authService.getCurrentUser().id}`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
 

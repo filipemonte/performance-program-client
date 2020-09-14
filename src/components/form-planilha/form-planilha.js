@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { trackPromise } from 'react-promise-tracker';
-import { Link, Redirect } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { myConfig } from '../../config';
 import authHeader from '../../auth/auth-header';
+import authService from '../../auth/auth-service';
 
 class FormPlanilha extends Component {
   constructor(props) {
@@ -71,7 +72,7 @@ class FormPlanilha extends Component {
     }
     else {
       trackPromise(
-        fetch(`${myConfig.apiUrl}/planilha/1`, { method: 'post', headers: authHeader(), body })
+        fetch(`${myConfig.apiUrl}/planilha/${authService.getCurrentUser().id}`, { method: 'post', headers: authHeader(), body })
           .then(function (response) {
             if (response.ok) {
               window.location.href = '/gerenciarplanilhas';

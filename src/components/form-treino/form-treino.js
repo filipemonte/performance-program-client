@@ -1,12 +1,12 @@
-import React, { Component, useDebugValue } from 'react';
+import React, { Component } from 'react';
 import { trackPromise } from 'react-promise-tracker';
-import { Link, Redirect } from 'react-router-dom'
 import ParteTreino from './parte-treino';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment'
 import { myConfig } from '../../config';
 import authHeader from '../../auth/auth-header';
+import authService from '../../auth/auth-service';
 
 class FormTreino extends Component {
   constructor(props) {
@@ -156,7 +156,7 @@ class FormTreino extends Component {
     const body = JSON.stringify(this.state);
 
     trackPromise(
-      fetch(`${myConfig.apiUrl}/treino/1/${this.props.idPlanilha}/${this.props.idPlanilhaAtleta}`, { method: 'POST', headers: authHeader(), body })
+      fetch(`${myConfig.apiUrl}/treino/${authService.getCurrentUser().id}/${this.props.idPlanilha}/${this.props.idPlanilhaAtleta}`, { method: 'POST', headers: authHeader(), body })
         .then(function (response) {
           if (response.ok) {
             window.location.href = '/programacao';

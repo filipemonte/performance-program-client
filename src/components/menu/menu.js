@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './menu.css';
 
 import { userContext } from '../../userContext';
-import { Link } from 'react-router-dom'
 import MenuAtleta from '../menu-atleta';
 import MenuTreinador from '../menu-treinador';
 import authService from '../../auth/auth-service';

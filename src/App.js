@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import HomeAtleta from './pages/Atleta/HomeAtleta';
 import PersonalRecord from './pages/Atleta/PersonalRecord';
@@ -20,10 +20,6 @@ import Login from './pages/Login';
 import authService from './auth/auth-service';
 import * as firebase from "firebase/app";
 import "firebase/auth";
-
-import { useHistory } from 'react-router-dom';
-import { useLocation } from 'react-router';
-
 
 
 class App extends React.Component {

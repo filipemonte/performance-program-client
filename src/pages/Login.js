@@ -22,10 +22,17 @@ class Login extends React.Component {
               <div className="login-form col-md-5">
                 <form onSubmit={loginUser} >
                   <h2 className="text-center titulo-login">Entrar</h2>
+
+                  <div className="alert alert-success">
+                    <p>LOGIN TREINADOR: <br/>
+                    Email: treinador@gmail.com Senha: 123</p>
+                    <p>LOGIN ATLETA: <br/>
+                    Email: atleta@gmail.com Senha: 123</p>
+                  </div>
                   {
                     this.props.errorMessage.length > 0 ? <p className="alert alert-danger text-center">{this.props.errorMessage}</p> : <p></p>
                   }
-        
+
                   <div className="form-group">
                     <input type="text" className="form-control" placeholder="Email" name="email" senha="email" />
                   </div>
@@ -40,11 +47,6 @@ class Login extends React.Component {
                     <FirebaseAuthProvider {...firebaseConfig} firebase={firebase}>
                       <div>
                         <button className="btn btn-primary btn-block" onClick={loginOAuth}>Entrar com Google</button>
-                        {/* 
-                        <button onClick={() => {
-                            firebase.auth().signOut();
-                          }}>
-                          Sign Out</button> */}
                       </div>
                     </FirebaseAuthProvider>
                   </div>

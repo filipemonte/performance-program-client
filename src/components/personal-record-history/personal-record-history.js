@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { trackPromise } from 'react-promise-tracker';
-import { Link } from 'react-router-dom'
 import moment from 'moment'
 import PersonalRecordChart from '../../components/personal-record-chart';
 import { myConfig } from '../../config';

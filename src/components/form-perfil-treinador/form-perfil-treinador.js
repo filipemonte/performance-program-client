@@ -3,6 +3,7 @@ import { trackPromise } from 'react-promise-tracker';
 import './form-perfil-treinador.css';
 import { myConfig } from '../../config';
 import authHeader from '../../auth/auth-header';
+import authService from '../../auth/auth-service';
 
 class FormPerfilTreinador extends Component {
   constructor(props) {
@@ -27,7 +28,7 @@ class FormPerfilTreinador extends Component {
   componentDidUpdate(prevState) {
     if (!this.state.updated) {
       trackPromise(
-        fetch(`${myConfig.apiUrl}/coach/1`, { headers: authHeader() })
+        fetch(`${myConfig.apiUrl}/coach/${authService.getCurrentUser().id}`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
             console.log('carregou')
@@ -68,7 +69,7 @@ class FormPerfilTreinador extends Component {
     //const body = JSON.stringify(Object.fromEntries(new FormData(e.target)));
 
     trackPromise(
-      fetch(`${myConfig.apiUrl}/coach/1`, { method: 'PUT', headers: authHeader(), body })
+      fetch(`${myConfig.apiUrl}/coach/${authService.getCurrentUser().id}`, { method: 'PUT', headers: authHeader(), body })
         .then(function (response) {
           if(response.ok) {
             window.location.reload(false);

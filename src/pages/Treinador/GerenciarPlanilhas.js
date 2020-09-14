@@ -5,6 +5,7 @@ import { trackPromise } from 'react-promise-tracker';
 import { Link } from 'react-router-dom'
 import { myConfig } from '../../config';
 import authHeader from '../../auth/auth-header';
+import authService from '../../auth/auth-service';
 import { userContext } from '../../userContext';
 
 class GerenciarPlanilhas extends React.Component {
@@ -24,7 +25,7 @@ class GerenciarPlanilhas extends React.Component {
   componentDidUpdate(prevState) {
     if (!this.state.fetched) {
       trackPromise(
-        fetch(`${myConfig.apiUrl}/planilhas/1`, { headers: authHeader() })
+        fetch(`${myConfig.apiUrl}/planilhas/${authService.getCurrentUser().id}`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
             this.setState({ planilhas: data })
@@ -38,7 +39,7 @@ class GerenciarPlanilhas extends React.Component {
   handleRemoveClick(id, e) {
     e.preventDefault()
     trackPromise(
-      fetch(`${myConfig.apiUrl}/planilha/1/${id}`, { method: 'delete', headers: authHeader() })
+      fetch(`${myConfig.apiUrl}/planilha/${authService.getCurrentUser().id}/${id}`, { method: 'delete', headers: authHeader() })
         .then(function (response) {
           if (response.ok) {
             window.location.reload(false);

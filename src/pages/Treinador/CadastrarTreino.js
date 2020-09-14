@@ -2,16 +2,11 @@ import React from 'react';
 import Menu from '../../components/menu';
 import Navbar from '../../components/navbar';
 import FormTreino from '../../components/form-treino';
-import { trackPromise } from 'react-promise-tracker';
-
 
 class CadastrarTreino extends React.Component {
   
 
   render() {
-
-
-
     return (
       <div>
         <Menu></Menu>

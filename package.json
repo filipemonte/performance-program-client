@@ -24,12 +24,11 @@
     "react-scripts": "^3.4.3",
     "react-sparklines": "^1.7.0",
     "react-switch": "^5.0.1",
-    "react-to-print": "^2.10.0",
-    "serve": "^9.4.0"
+    "react-to-print": "^2.10.0"
   },
   "scripts": {
     "dev": "react-scripts start",
-    "start": "serve -s build",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",

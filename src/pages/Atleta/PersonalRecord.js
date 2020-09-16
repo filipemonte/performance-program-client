@@ -96,15 +96,20 @@ class PR extends React.Component {
           <div className="content">
             <div className="row">
               <div className="col-md-6">
-              <ReactToPrint
-                trigger={() => {
-                  // NOTE: could just as easily return <SomeComponent />. Do NOT pass an `onClick` prop
-                  // to the root node of the returned component as it will be overwritten.
-                  return <a href="#">Exportar (PDF)</a>;
-                }}
-                content={() => this.componentRef}
-              />
-                <PersonalRecord ref={el => (this.componentRef = el)}></PersonalRecord>
+                <div className="card ">
+                  <div className="card-header ">
+                    <h5 className="card-title">Personal Records</h5>
+                    <ReactToPrint
+                      trigger={() => {
+                        // NOTE: could just as easily return <SomeComponent />. Do NOT pass an `onClick` prop
+                        // to the root node of the returned component as it will be overwritten.
+                        return <a href="#">Exportar (PDF)</a>;
+                      }}
+                      content={() => this.componentRef} />
+                  </div>
+
+                  <PersonalRecord ref={el => (this.componentRef = el)}></PersonalRecord>
+                </div>
               </div>
               <div className="col-md-6">
                 <div className="card ">
@@ -112,7 +117,7 @@ class PR extends React.Component {
                     <h5 className="card-title">Treinos Realizados</h5>
                   </div>
                   <div className="card-body ">
-                    <Chart options={this.state.options} series={this.state.series} type="bar"height="500px" />
+                    <Chart options={this.state.options} series={this.state.series} type="bar" height="500px" />
                   </div>
                 </div>
               </div>

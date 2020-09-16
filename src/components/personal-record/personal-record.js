@@ -42,14 +42,9 @@ class personalRecord extends Component {
 
   render() {
     return (
-      <div className="card ">
-        <div className="card-header ">
-          <h5 className="card-title">Personal Records</h5>
-        </div>
         <div className="card-body ">
           <ListaPR param={this.state.prs} ></ListaPR>
         </div>
-      </div>
     );
   }
 }

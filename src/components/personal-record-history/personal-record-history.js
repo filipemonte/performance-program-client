@@ -31,7 +31,7 @@ class PeronalRecordHistory extends Component {
               <PersonalRecordChart idExercicio={this.props.idExercicio}></PersonalRecordChart>
             </div>
 
-            <ListaPRHistory history={this.props.history} idExercicio={this.props.idExercicio} ></ListaPRHistory>
+            <ListaPRHistory history={this.props.history} editPr={this.props.editPr} idExercicio={this.props.idExercicio} ></ListaPRHistory>
           </div>
         </div>
       </div>
@@ -62,6 +62,12 @@ class ListaPRHistory extends Component {
     );
   }
 
+  
+  handleEditClick(id, data, resultado, event) {
+    event.preventDefault()
+    this.props.editPr(id, data, resultado)
+  }
+
   render() {
     if (!this.props.history || !this.props.history.length) {
       return (
@@ -83,6 +89,9 @@ class ListaPRHistory extends Component {
 
                 <button onClick={() => this.handleClick(item.id)} className="btn btn-icon-remover pull-right" >
                   <span className="glyphicon glyphicon-remove" />
+                </button>
+                <button onClick={(event) => this.handleEditClick(item.id, item.data, item.resultado, event)} className="btn btn-icon-adicionar pull-right" >
+                  <span className="glyphicon glyphicon-edit" />
                 </button>
                 <span className="resultado-pr pull-right">{item.resultado} lb</span>
               </li>

@@ -18,7 +18,11 @@ class PeronalRecordForm extends Component {
     this.state = {
       dataPR: '',
       dataPRTela: '',
+      resultado: '',
+      idEdicao: 0
     };
+
+   
   }
 
   dataChangeHandler = date => {
@@ -28,6 +32,10 @@ class PeronalRecordForm extends Component {
     });
   };
 
+  resultadoChangeHandler = event => {
+    this.setState({resultado: event.target.value});
+  }
+
   handleSubmit(idExercicio, e) {
     e.preventDefault();
     var body = JSON.stringify(Object.fromEntries(new FormData(e.target)));
@@ -35,9 +43,18 @@ class PeronalRecordForm extends Component {
     body = JSON.parse(body);
     body.DataPR = this.state.dataPR;
 
+    let submitMethod = "post";
+
+    if (this.state.idEdicao > 0)
+    {
+      body.idEdicao = this.state.idEdicao;
+      submitMethod = "put";  
+    }
+
     body = JSON.stringify(body);
+
     trackPromise(
-      fetch(`${myConfig.apiUrl}/prhistory/${authService.getCurrentUser().id}/${idExercicio}`, { method: 'post', headers: authHeader(), body })
+      fetch(`${myConfig.apiUrl}/prhistory/${authService.getCurrentUser().id}/${idExercicio}`, { method: submitMethod, headers: authHeader(), body })
         .then(function (response) {
           if(response.ok) {
             window.location.reload(false);
@@ -47,7 +64,39 @@ class PeronalRecordForm extends Component {
     );
   }
 
+  componentDidUpdate(prevState)
+  {
+    if (prevState.prEdicao.id !== this.props.prEdicao.id && this.props.prEdicao.id > 0)
+    {
+      this.setState({
+        dataPRTela: new Date(this.props.prEdicao.data),
+        dataPR: moment(new Date(this.props.prEdicao.data)).format('YYYY-MM-DD'),
+        resultado: this.props.prEdicao.resultado,
+        idEdicao:this.props.prEdicao.id
+      });
+    }
+
+  }
+
+  handleCancelar(e)
+  {
+    e.preventDefault();
+    this.setState({
+      dataPR: '',
+      dataPRTela: '',
+      resultado: '',
+      idEdicao: 0
+    });
+  }
+
   render() {
+
+    let cancelButton = "";
+    if (this.state.idEdicao > 0)
+    {              
+      cancelButton = <button id="btn-cancelar" className="btn btn-secondary pull-right" onClick={(e) => this.handleCancelar(e)}>Cancelar</button>
+    }
+
     return (
       <div className="col-md-7">
         <div className="card ">
@@ -63,10 +112,12 @@ class PeronalRecordForm extends Component {
               </div>
               <div className="form-group form-inline">
                 <label htmlFor="resultado-pr" className="col-md-2">Resultado:</label>
-                <input type="text" className="form-control col-md-10" placeholder="Resultado" id="ResultadoPR" name="ResultadoPR" />
+                <input type="text" className="form-control col-md-10" placeholder="Resultado" id="ResultadoPR" name="ResultadoPR" value={this.state.resultado} onChange={this.resultadoChangeHandler} />
               </div>
               <div id="msg-erro" className="alert alert-danger hide" />
-              <button id="btn-salvar-pr" type="submit" className="btn btn-primary pull-right">Salvar</button>
+
+              <button id="btn-salvar-pr" type="submit" className="btn btn-primary pull-right" >Salvar</button>
+              {cancelButton}
             </form>
           </div>
         </div>

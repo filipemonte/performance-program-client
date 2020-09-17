@@ -9,6 +9,7 @@ import authHeader from '../../auth/auth-header';
 import authService from '../../auth/auth-service';
 
 import './calendario-atleta.css';
+import { userContext } from '../../userContext';
 
 
 
@@ -30,6 +31,11 @@ class CalendarioAtleta extends Component {
         fetch(`${myConfig.apiUrl}/trainingDates/${authService.getCurrentUser().id}`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
+            if (data.auth !== undefined && data.auth === false)
+            {
+              this.context.logoutUser()
+            }
+
             this.setState({ events: data.map(p => ({ title: 'Treino', date: p.data, allDay: true, rendering: 'background' })) })
           })
           .catch(console.log)
@@ -78,5 +84,5 @@ class CalendarioAtleta extends Component {
   }
 }
 
-
+CalendarioAtleta.contextType = userContext;
 export default CalendarioAtleta;

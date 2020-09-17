@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import { myConfig } from '../../config';
 import authHeader from '../../auth/auth-header';
 import authService from '../../auth/auth-service';
+import { userContext } from '../../userContext';
+
 
 class ListaPlanilhas extends Component {
   constructor(props) {
@@ -25,7 +27,11 @@ class ListaPlanilhas extends Component {
         fetch(`${myConfig.apiUrl}/planilhasatleta/${authService.getCurrentUser().id}`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
-
+            if (data.auth !== undefined && data.auth === false)
+            {
+              this.context.logoutUser()
+            }
+            
             let personalizadas = data.filter((p) => {
               return p.tipo === 'personalizada';
             })
@@ -112,4 +118,5 @@ class ListaPlanilhas extends Component {
   }
 }
 
+ListaPlanilhas.contextType = userContext;
 export default ListaPlanilhas;

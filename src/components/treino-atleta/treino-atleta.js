@@ -26,6 +26,12 @@ class TreinoAtleta extends Component {
       fetch(`${myConfig.apiUrl}/training/${authService.getCurrentUser().id}/${this.props.selectedDate}`, { headers: authHeader() })
         .then(res => res.json())
         .then((data) => {
+
+          if (data.auth !== undefined && data.auth === false)
+          {
+            this.context.logoutUser()
+          }
+
           this.setState({ training: data.reverse() })
           this.setState({ selectedDate: this.props.selectedDate })
           this.setState({ fetched: false })
@@ -43,6 +49,11 @@ class TreinoAtleta extends Component {
         fetch(`${myConfig.apiUrl}/training/${authService.getCurrentUser().id}/${this.props.selectedDate}`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
+            if (data.auth !== undefined && data.auth === false)
+            {
+              this.context.logoutUser()
+            }
+            
             this.setState({ training: data.reverse() })
             this.setState({ selectedDate: this.props.selectedDate })
             this.setState({ fetched: false })
@@ -124,5 +135,5 @@ class TreinoAtleta extends Component {
     );
   }
 }
-
+TreinoAtleta.contextType = userContext;
 export default TreinoAtleta;

@@ -7,6 +7,8 @@ import moment from 'moment'
 import { myConfig } from '../../config';
 import authHeader from '../../auth/auth-header';
 import authService from '../../auth/auth-service';
+import { userContext } from '../../userContext';
+
 
 class FormTreino extends Component {
   constructor(props) {
@@ -35,7 +37,10 @@ class FormTreino extends Component {
         fetch(`${myConfig.apiUrl}/treinoplanilha/${this.props.idPlanilha}/${this.props.dataTreino}/`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
-
+            if (data.auth !== undefined && data.auth === false)
+            {
+              this.context.logoutUser()
+            }
 
             let temp = [];
             data.forEach((element, index) => {
@@ -206,4 +211,5 @@ class FormTreino extends Component {
   }
 }
 
+FormTreino.contextType = userContext;
 export default FormTreino;

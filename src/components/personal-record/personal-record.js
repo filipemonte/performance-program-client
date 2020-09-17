@@ -6,6 +6,8 @@ import PersonalRecordChart from '../../components/personal-record-chart';
 import { myConfig } from '../../config';
 import authHeader from '../../auth/auth-header';
 import authService from '../../auth/auth-service';
+import { userContext } from '../../userContext';
+
 
 import './personal-record.css';
 
@@ -32,6 +34,11 @@ class personalRecord extends Component {
         fetch(`${myConfig.apiUrl}/personalrecord/${authService.getCurrentUser().id}`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
+            if (data.auth !== undefined && data.auth === false)
+            {
+              this.context.logoutUser()
+            }
+            
             this.setState({ prs: data })
             this.setState({ fetched: true })
           })
@@ -90,4 +97,5 @@ function ListaPR(param) {
   }
 }
 
+personalRecord.contextType = userContext;
 export default personalRecord;

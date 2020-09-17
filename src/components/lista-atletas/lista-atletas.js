@@ -29,6 +29,11 @@ class ListaAtletas extends Component {
       fetch(`${myConfig.apiUrl}/planilhas/${authService.getCurrentUser().id}`, { headers: authHeader() })
         .then(res => res.json())
         .then((data) => {
+          if (data.auth !== undefined && data.auth === false)
+          {
+            this.context.logoutUser()
+          }
+
           this.setState({ planilhas: data })
         })
         .catch(console.log)
@@ -41,6 +46,11 @@ class ListaAtletas extends Component {
         fetch(`${myConfig.apiUrl}/atletas/${authService.getCurrentUser().id}`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
+            if (data.auth !== undefined && data.auth === false)
+            {
+              this.context.logoutUser()
+            }
+
             this.setState({ atletas: data })
             this.setState({ fetched: true })
           })
@@ -85,6 +95,11 @@ class ListaAtletas extends Component {
     trackPromise(
       fetch(`${myConfig.apiUrl}/statusatleta/${id}`, { method: 'PUT', headers: authHeader(), body })
         .then((data) => {
+          if (data.auth !== undefined && data.auth === false)
+          {
+            this.context.logoutUser()
+          }
+          
           let temp = [...this.state.atletas];
           temp.find(x => x.id == id).status = status;
           this.setState({ atletas: temp })

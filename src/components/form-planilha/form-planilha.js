@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom'
 import { myConfig } from '../../config';
 import authHeader from '../../auth/auth-header';
 import authService from '../../auth/auth-service';
+import { userContext } from '../../userContext';
+
 
 class FormPlanilha extends Component {
   constructor(props) {
@@ -31,6 +33,11 @@ class FormPlanilha extends Component {
         fetch(`${myConfig.apiUrl}/planilha/${this.props.idPlanilha}`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
+            if (data.auth !== undefined && data.auth === false)
+            {
+              this.context.logoutUser()
+            }
+            
             if (data.nome) {
               this.setState({ nome: data.nome })
             }
@@ -171,4 +178,5 @@ class FormPlanilha extends Component {
   }
 }
 
+FormPlanilha.contextType = userContext;
 export default FormPlanilha;

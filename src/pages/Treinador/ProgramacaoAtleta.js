@@ -7,6 +7,9 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction";
 import { myConfig } from '../../config';
 import authHeader from '../../auth/auth-header';
+import { userContext } from '../../userContext';
+
+
 
 class ProgramacaoAtleta extends React.Component {
   constructor(props) {
@@ -30,11 +33,16 @@ class ProgramacaoAtleta extends React.Component {
         fetch(`${myConfig.apiUrl}/trainingdates/${this.props.match.params.id}`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
-            this.setState({ datasTreino: data.map(p => ({ title: 'Treino', date: p.data, allDay: true, rendering: 'background' })) })
-            this.setState({ nomeAtleta: data[0].nome })
-            this.setState({ idPlanilhaAtleta: data[0].idplanilhaatleta })
-            this.setState({ idPlanilha: data[0].idplanilha })
-            this.setState({ fetched: true })
+            if (data.auth !== undefined && data.auth === false)
+            {
+              this.context.logoutUser()
+            }
+
+            this.setState({ datasTreino: data.map(p => ({ title: 'Treino', date: p.data, allDay: true, rendering: 'background' })),
+                            nomeAtleta: data[0].nome,
+                            idPlanilhaAtleta: data[0].idplanilhaatleta,
+                            idPlanilha: data[0].idplanilha,
+                            fetched: true })
           })
           .catch(console.log)
       );
@@ -92,5 +100,6 @@ class ProgramacaoAtleta extends React.Component {
   }
 }
 
+ProgramacaoAtleta.contextType = userContext;
 export default ProgramacaoAtleta;
 

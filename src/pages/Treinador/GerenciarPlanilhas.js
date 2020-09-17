@@ -28,6 +28,11 @@ class GerenciarPlanilhas extends React.Component {
         fetch(`${myConfig.apiUrl}/planilhas/${authService.getCurrentUser().id}`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
+            if (data.auth !== undefined && data.auth === false)
+            {
+              this.context.logoutUser()
+            }
+            
             this.setState({ planilhas: data })
             this.setState({ fetched: true })
           })

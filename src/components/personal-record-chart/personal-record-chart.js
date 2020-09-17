@@ -4,6 +4,8 @@ import { Sparklines, SparklinesLine } from 'react-sparklines';
 import { myConfig } from '../../config';
 import authHeader from '../../auth/auth-header';
 import authService from '../../auth/auth-service';
+import { userContext } from '../../userContext';
+
 
 class personalRecordChart extends Component {
   constructor(props) {
@@ -25,10 +27,13 @@ class personalRecordChart extends Component {
         fetch(`${myConfig.apiUrl}/personalrecordhistory/${authService.getCurrentUser().id}/${this.props.idExercicio}`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
+            if (data.auth !== undefined && data.auth === false)
+            {
+              this.context.logoutUser()
+            }
+
             this.setState({ prs: [0, ...data.map(a=>a.resultado).reverse()] })
             this.setState({ fetched: true })
-
-            console.log(this.state.prs)
 
           })
           .catch(console.log)
@@ -47,5 +52,5 @@ class personalRecordChart extends Component {
   }
 }
 
-
+personalRecordChart.contextType = userContext;
 export default personalRecordChart;

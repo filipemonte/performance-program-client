@@ -30,9 +30,14 @@ class ProgramacaoPlanilha extends React.Component {
         fetch(`${myConfig.apiUrl}/programtrainingdates/${this.props.match.params.id}`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
-            this.setState({ datasTreino: data.map(p => ({ title: 'Treino', date: p.data, allDay: true, rendering: 'background' })) })
-            this.setState({ nomePlanilha: data[0].nome })
-            this.setState({ fetched: true })
+            if (data.auth !== undefined && data.auth === false)
+            {
+              this.context.logoutUser()
+            }
+
+            this.setState({ datasTreino: data.map(p => ({ title: 'Treino', date: p.data, allDay: true, rendering: 'background' })),
+                            nomePlanilha: data[0].nome,
+                            fetched: true })
           })
           .catch(console.log)
       );
@@ -90,6 +95,8 @@ class ProgramacaoPlanilha extends React.Component {
     );
   }
 }
+
+ProgramacaoPlanilha.contextType = userContext;
 
 export default ProgramacaoPlanilha;
 

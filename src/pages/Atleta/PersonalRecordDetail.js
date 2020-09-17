@@ -8,16 +8,18 @@ import PersonalRecordHistory from '../../components/personal-record-history';
 import { myConfig } from '../../config';
 import authHeader from '../../auth/auth-header';
 import authService from '../../auth/auth-service';
+import { userContext } from '../../userContext';
+
 
 class PR extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log()
-
+    this.editPr = this.editPr.bind(this)
     this.state = {
       history: [],
-      fetched: false
+      fetched: false,
+      prEdicao: { id: 0 }
     };
   }
   componentDidMount() {
@@ -35,11 +37,22 @@ class PR extends React.Component {
       fetch(`${myConfig.apiUrl}/personalrecordhistory/${authService.getCurrentUser().id}/${this.props.match.params.id}`, { headers: authHeader() })
         .then(res => res.json())
         .then((data) => {
+          if (data.auth !== undefined && data.auth === false)
+          {
+            this.context.logoutUser()
+          }
+          
           this.setState({ history: data })
           this.setState({ fetched: true })
         })
         .catch(console.log)
     );
+  }
+
+  editPr(id, data, resultado)
+  {
+    let prEdicao = { id: id, data: data, resultado: resultado}
+    this.setState({prEdicao: prEdicao})
   }
 
   render() {
@@ -50,8 +63,8 @@ class PR extends React.Component {
           <Navbar></Navbar>
           <div className="content">
             <div className="row">
-              <PersonalRecordForm updateHistory={this.getHistory} idExercicio={this.props.match.params.id}></PersonalRecordForm>
-              <PersonalRecordHistory history={this.state.history} idExercicio={this.props.match.params.id}></PersonalRecordHistory>
+              <PersonalRecordForm updateHistory={this.getHistory} prEdicao={this.state.prEdicao} idExercicio={this.props.match.params.id}></PersonalRecordForm>
+              <PersonalRecordHistory history={this.state.history} idExercicio={this.props.match.params.id} editPr={this.editPr}></PersonalRecordHistory>
             </div>
           </div>
           <Footer></Footer>
@@ -60,6 +73,6 @@ class PR extends React.Component {
     );
   }
 }
-
+PR.contextType = userContext;
 export default PR;
 

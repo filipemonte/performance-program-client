@@ -4,6 +4,7 @@ import './form-perfil-treinador.css';
 import { myConfig } from '../../config';
 import authHeader from '../../auth/auth-header';
 import authService from '../../auth/auth-service';
+import { userContext } from '../../userContext';
 
 class FormPerfilTreinador extends Component {
   constructor(props) {
@@ -31,7 +32,11 @@ class FormPerfilTreinador extends Component {
         fetch(`${myConfig.apiUrl}/coach/${authService.getCurrentUser().id}`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
-            console.log('carregou')
+            if (data.auth !== undefined && data.auth === false)
+            {
+              this.context.logoutUser()
+            }
+            
             if (data.nomecoach) {
               this.setState({ nomecoach: data.nomecoach })
             }
@@ -151,4 +156,5 @@ class FormPerfilTreinador extends Component {
   }
 }
 
+FormPerfilTreinador.contextType = userContext;
 export default FormPerfilTreinador;

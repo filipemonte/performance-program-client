@@ -3,6 +3,8 @@ import { trackPromise } from 'react-promise-tracker';
 import { myConfig } from '../../config';
 import authHeader from '../../auth/auth-header';
 import authService from '../../auth/auth-service';
+import { userContext } from '../../userContext';
+
 
 class FormPerfilAtleta extends Component {
   constructor(props) {
@@ -33,7 +35,11 @@ class FormPerfilAtleta extends Component {
         fetch(`${myConfig.apiUrl}/atleta/${authService.getCurrentUser().id}`, { headers: authHeader() })
           .then(res => res.json())
           .then((data) => {
-            console.log('carregou')
+            if (data.auth !== undefined && data.auth === false)
+            {
+              this.context.logoutUser()
+            }
+            
             if (data.nome)
             {
               this.setState({ nome: data.nome })
@@ -73,7 +79,10 @@ class FormPerfilAtleta extends Component {
       fetch(`${myConfig.apiUrl}/atleta/${authService.getCurrentUser().id}`, {method: 'PUT', headers: authHeader(), body})
         .then(res => res.json())
         .then((data) => {
-          
+          if (data.auth !== undefined && data.auth === false)
+          {
+            this.context.logoutUser()
+          }
         })
         .catch(console.log)
     );
@@ -160,4 +169,5 @@ class FormPerfilAtleta extends Component {
   }
 }
 
+FormPerfilAtleta.contextType = userContext;
 export default FormPerfilAtleta;

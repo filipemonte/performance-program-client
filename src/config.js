@@ -1,5 +1,5 @@
-//export const myConfig = { apiUrl: 'https://performanceprogram-api.herokuapp.com/api' };
-export const myConfig = { apiUrl: 'http://localhost:3001/api' };
+export const myConfig = { apiUrl: 'https://performanceprogram-api.herokuapp.com/api' };
+// export const myConfig = { apiUrl: 'http://localhost:3001/api' };
 
 
 export const firebaseConfig = {

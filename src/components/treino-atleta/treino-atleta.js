@@ -32,7 +32,7 @@ class TreinoAtleta extends Component {
             this.context.logoutUser()
           }
 
-          this.setState({ training: data.reverse() })
+          this.setState({ training: data })
           this.setState({ selectedDate: this.props.selectedDate })
           this.setState({ fetched: false })
 
@@ -54,7 +54,7 @@ class TreinoAtleta extends Component {
               this.context.logoutUser()
             }
             
-            this.setState({ training: data.reverse() })
+            this.setState({ training: data })
             this.setState({ selectedDate: this.props.selectedDate })
             this.setState({ fetched: false })
 

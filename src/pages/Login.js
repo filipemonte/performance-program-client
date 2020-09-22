@@ -28,6 +28,8 @@ class Login extends React.Component {
                     Email: treinador@gmail.com Senha: 123</p>
                     <p>LOGIN ATLETA: <br/>
                     Email: atleta@gmail.com Senha: 123</p>
+                    <p>NOVO REGISTRO DE ATLETA: <br/>
+                    Utilizar opção "Entrar com Google"</p>
                   </div>
                   {
                     this.props.errorMessage.length > 0 ? <p className="alert alert-danger text-center">{this.props.errorMessage}</p> : <p></p>

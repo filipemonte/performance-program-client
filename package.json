@@ -19,6 +19,7 @@
     "react-dom": "^16.13.1",
     "react-firebase": "^2.2.8",
     "react-loader-spinner": "^3.1.14",
+    "react-modal-video": "^1.2.5",
     "react-promise-tracker": "^2.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.3",

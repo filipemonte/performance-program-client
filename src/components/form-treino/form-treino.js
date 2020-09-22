@@ -29,41 +29,52 @@ class FormTreino extends Component {
     this.dataChangeHandler = this.dataChangeHandler.bind(this);
     this.handleIncluirParteClick = this.handleIncluirParteClick.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.carregarTreinoCadastrado = this.carregarTreinoCadastrado.bind(this);
+  }
+
+  componentDidMount(prevState) {
+    if (!this.state.fetched && this.props.dataTreino != undefined) {
+      this.carregarTreinoCadastrado()
+    }
   }
 
   componentDidUpdate(prevState) {
     if (!this.state.fetched && this.props.dataTreino != undefined) {
-      trackPromise(
-        fetch(`${myConfig.apiUrl}/treinoplanilha/${this.props.idPlanilha}/${this.props.dataTreino}/`, { headers: authHeader() })
-          .then(res => res.json())
-          .then((data) => {
-            if (data.auth !== undefined && data.auth === false)
-            {
-              this.context.logoutUser()
-            }
-
-            let temp = [];
-            data.forEach((element, index) => {
-              temp.push({
-                id: index,
-                titulo: element[0],
-                descricao: element[1][0].descricaopartetreino,
-                tipo: '',
-                exercicios: element[1]
-              });
-            });
-
-            this.setState({ dataTreino: this.props.dataTreino })
-
-            var parts = this.props.dataTreino.match(/(\d+)/g);
-            this.setState({ dataTreinoTela: new Date(parts[0], parts[1]-1, parts[2]) })
-            this.setState({ partesTreino: temp })
-            this.setState({ fetched: true })
-          })
-          .catch(console.log)
-      );
+      this.carregarTreinoCadastrado()
     }
+  }
 
+  carregarTreinoCadastrado()
+  {
+    trackPromise(
+      fetch(`${myConfig.apiUrl}/treinoplanilha/${this.props.idPlanilha}/${this.props.dataTreino}/`, { headers: authHeader() })
+        .then(res => res.json())
+        .then((data) => {
+          if (data.auth !== undefined && data.auth === false)
+          {
+            this.context.logoutUser()
+          }
+
+          let temp = [];
+          data.reverse().forEach((element, index) => {
+            temp.push({
+              id: index,
+              titulo: element[0],
+              descricao: element[1][0].descricaopartetreino,
+              tipo: '',
+              exercicios: element[1]
+            });
+          });
+
+          this.setState({ dataTreino: this.props.dataTreino })
+
+          var parts = this.props.dataTreino.match(/(\d+)/g);
+          this.setState({ dataTreinoTela: new Date(parts[0], parts[1]-1, parts[2]) })
+          this.setState({ partesTreino: temp })
+          this.setState({ fetched: true })
+        })
+        .catch(console.log)
+    );
   }
 
   handleIncluirParteClick(e) {

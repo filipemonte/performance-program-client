@@ -36,7 +36,7 @@ class CalendarioAtleta extends Component {
               this.context.logoutUser()
             }
 
-            this.setState({ events: data.map(p => ({ title: 'Treino', date: p.data, allDay: true, rendering: 'background' })) })
+            this.setState({ events: data.map(p => ({ title: 'Treino', date: p.data.substring(0,10), allDay: true, rendering: 'background' })) })
           })
           .catch(console.log)
       );

@@ -35,7 +35,7 @@ class ProgramacaoPlanilha extends React.Component {
               this.context.logoutUser()
             }
 
-            this.setState({ datasTreino: data.map(p => ({ title: 'Treino', date: p.data, allDay: true, rendering: 'background' })),
+            this.setState({ datasTreino: data.map(p => ({ title: 'Treino', date: p.data.substring(0,10), allDay: true, rendering: 'background' })),
                             nomePlanilha: data[0].nome,
                             fetched: true })
           })

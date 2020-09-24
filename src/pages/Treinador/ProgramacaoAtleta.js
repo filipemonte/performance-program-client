@@ -38,7 +38,7 @@ class ProgramacaoAtleta extends React.Component {
               this.context.logoutUser()
             }
 
-            this.setState({ datasTreino: data.map(p => ({ title: 'Treino', date: p.data, allDay: true, rendering: 'background' })),
+            this.setState({ datasTreino: data.map(p => ({ title: 'Treino', date: p.data.substring(0,10), allDay: true, rendering: 'background' })),
                             nomeAtleta: data[0].nome,
                             idPlanilhaAtleta: data[0].idplanilhaatleta,
                             idPlanilha: data[0].idplanilha,
